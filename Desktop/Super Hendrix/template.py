@@ -22,29 +22,14 @@ class ModelSprite(arcade.Sprite):
         super().draw()
 
 
-class SpaceGameWindow(arcade.Window):
-    def __init__(self, width, height):
-        super().__init__(width, height)
+class DiamondsSprite:
+    def __init__(self,model):
+        self.model = model
+        self.coin_sprite = arcade.Sprite('images/diamonds.png')
 
-        arcade.set_background_color(arcade.color.BLACK)
-        self.world = World(width, height)
-        self.ship_sprite = ModelSprite('images/hendrix.jpg', model=self.world.ship)
-        self.gold_sprite = ModelSprite('images/diamonds.png', model=self.world.gold)
-
-    def on_draw(self):
-        arcade.start_render()
-        self.gold_sprite.draw()
-        self.ship_sprite.draw()
- 
-        arcade.draw_text(str(self.world.score),
-                         self.width - 30, self.height - 30,
-                         arcade.color.WHITE, 20)
-
-    def update(self, delta):
-        self.world.update(delta)
-  
-    def on_key_press(self, key, key_modifiers):
-        self.world.on_key_press(key, key_modifiers)
+    def draw(self):
+        self.coin_sprite.set_position(self.model.x, self.model.y)
+        self.coin_sprite.draw()
 
 
 if __name__ == '__main__':
