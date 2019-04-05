@@ -1,6 +1,6 @@
 import arcade
 
-from models import Ship,World
+from models import World
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
@@ -22,7 +22,7 @@ class ModelSprite(arcade.Sprite):
         super().draw()
 
 
-class DiamondsSprite:
+class DiamondSprite:
     def __init__(self,model):
         self.model = model
         self.diamond_sprite = arcade.Sprite('images/diamonds.png')
@@ -39,7 +39,7 @@ class Window(arcade.Window):
         self.background = arcade.load_texture("images/space.png")
 
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.dot_sprite = ModelSprite('images/player.png', model=self.world.player)
+        self.dot_sprite = ModelSprite('images/hendrix.png', model=self.world.player)
         self.diamond_sprite = [DiamondSprite(model=self.world.diamond[0]),DiamondSprite(model=self.world.diamond[1]),
                             DiamondSprite(model=self.world.diamond[2]),DiamondSprite(model=self.world.diamond[3]),
                             DiamondSprite(model=self.world.diamond[4])]
@@ -73,7 +73,7 @@ class Window(arcade.Window):
         arcade.start_render()
         # Draw the background texture
         self.draw_background()
-        for i in self.coin_sprite:
+        for i in self.diamond_sprite:
             i.draw()
         self.dot_sprite.draw()
         # Draw the score
@@ -84,17 +84,9 @@ class Window(arcade.Window):
 
 
 def main():
-    window = KurbyWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
+    window = Window(SCREEN_WIDTH, SCREEN_HEIGHT)
     arcade.set_window(window)
     arcade.run()
-
-def is_hit_diamonds(player_x, player_y, diamond_x, diamond_y):
-    if diamond_y - 20 <= player_y + 20:
-        if diamond_y + 20 <= player_y - 20:
-            return False
-        if player_x - 20 <= diamond_x +20 and diamond_x - 20 <= player_x + 20:
-            return True
-    return False
 
 
 if __name__ == '__main__':
