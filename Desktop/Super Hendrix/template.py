@@ -1,6 +1,6 @@
 import arcade
 
-from models import World
+from models import Hendrix,World
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
@@ -22,72 +22,31 @@ class ModelSprite(arcade.Sprite):
         super().draw()
 
 
-class DiamondSprite:
-    def __init__(self,model):
-        self.model = model
-        self.diamond_sprite = arcade.Sprite('images/diamonds.png')
-
-    def draw(self):
-        self.diamond_sprite.set_position(self.model.x, self.model.y)
-        self.diamond_sprite.draw()
-
-
-class Window(arcade.Window):
+class SpaceGameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
-        self.background = arcade.load_texture("images/space.png")
-
-        self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.dot_sprite = ModelSprite('images/hendrix.png', model=self.world.player)
-        self.diamond_sprite = [DiamondSprite(model=self.world.diamond[0]),DiamondSprite(model=self.world.diamond[1]),
-                            DiamondSprite(model=self.world.diamond[2]),DiamondSprite(model=self.world.diamond[3]),
-                            DiamondSprite(model=self.world.diamond[4])]
-
-    def on_key_press(self, key, key_modifiers):
-        if not self.world.is_start():
-            self.world.start()
-        self.world.on_key_press(key, key_modifiers)
-
-    def update(self, delta):
-        self.world.update(delta)
-        self.world.limit_screen(SCREEN_WIDTH)
-
-    def draw_background(self):
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
-                                      SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
-    def draw_score(self):
-        arcade.draw_text('Score : '+str(self.world.score),
-                         self.width - 140,
-                         self.height - 30,
-                         arcade.color.BLACK,
-                         20, )
-    def draw_level(self):
-        arcade.draw_text('Level : '+str(self.world.level),
-                         self.width - 400,
-                         self.height - 30,
-                         arcade.color.BLACK,
-                         20, )
+        arcade.set_background_color(arcade.color.BLACK)
+        self.world = World(width, height)
+        self.hendrix_sprite = ModelSprite('images/hendrix.png', model=self.world.hendrix)
+        self.diamond_sprite = ModelSprite('images/diamonds.png', model=self.world.diamond)
 
     def on_draw(self):
         arcade.start_render()
-        # Draw the background texture
-        self.draw_background()
-        for i in self.diamond_sprite:
-            i.draw()
-        self.dot_sprite.draw()
-        # Draw the score
-        self.draw_score()
-        #Draw level
-        self.draw_level()
+        self.diamond_sprite.draw()
+        self.hendrix_sprite.draw()
+ 
+        arcade.draw_text(str(self.world.score),
+                         self.width - 30, self.height - 30,
+                         arcade.color.WHITE, 20)
 
-
-
-def main():
-    window = Window(SCREEN_WIDTH, SCREEN_HEIGHT)
-    arcade.set_window(window)
-    arcade.run()
+    def update(self, delta):
+        self.world.update(delta)
+  
+    def on_key_press(self, key, key_modifiers):
+        self.world.on_key_press(key, key_modifiers)
 
 
 if __name__ == '__main__':
-    main()
+    window = SpaceGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
+    arcade.run()
