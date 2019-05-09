@@ -53,7 +53,6 @@ class MeteorSprite:
 
 class HendrixWindow(arcade.Window):
     DELAY = 5
-    temp_list = []
 
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -63,29 +62,39 @@ class HendrixWindow(arcade.Window):
         self.dot_sprite = ModelSprite(
             'images/hendrix.png', model=self.world.player)
         self.meteor_sprite = [MeteorSprite(model=self.world.meteor[0]),MeteorSprite(model=self.world.meteor[1])]
-        self.diamond_sprite = [DiamondSprite(model=self.world.diamond[0]), DiamondSprite(model=self.world.diamond[1]),
-                               DiamondSprite(model=self.world.diamond[2]), DiamondSprite(model=self.world.diamond[3]),
-                               DiamondSprite(model=self.world.diamond[4])]
-        self.meteor_big_sprite = [MeteorbigSprite(model=self.world.meteorbig[0]), MeteorbigSprite(model=self.world.meteorbig[1]),
-                                  MeteorbigSprite(model=self.world.meteorbig[2])]
+        self.diamond_sprite = self.create_diamonds()
+        self.meteor_big_sprite = self.create_meteor_big()
         self.hp = [arcade.load_texture("images/heart.png"), arcade.load_texture(
-            "images/heart.png"), arcade.load_texture("images/heart.png")]
-        self.num_hp = 2
+            "images/heart.png"), arcade.load_texture("images/heart.png"), arcade.load_texture("images/heart.png"), arcade.load_texture("images/heart.png")]
+        self.num_hp = 4
         self.menus = {'gameover': arcade.load_texture("images/gameover.png"),
                       'play': arcade.load_texture("images/play.png")}
         self.count = 0
         self.temp_player = 1
 
+    def create_diamonds(self):
+        temp = []
+        for i in range(0,4):
+            temp.append(DiamondSprite(model=self.world.diamond[i]))    
+        return temp
+
+    def create_meteor_big(self):
+        temp = []
+        for i in range(0,2):
+            temp.append(MeteorSprite(model=self.world.meteor[i]))
+        return temp
+
+
     def setup(self):
         self.background = arcade.load_texture("images/1.jpeg")
         self.hp = [arcade.load_texture("images/heart.png"), arcade.load_texture(
             "images/heart.png"), arcade.load_texture("images/heart.png")]
-        self.num_hp = 2
-        self.world.level = 0
+        self.num_hp = 4
+        self.world.level = 1
         self.world.score = 0
-        self.world.hp = 2
+        self.world.hp = 4
         self.world.level_meteor_big = 5
-        self.world.level_meteor = 2
+        self.world.level_meteor = 1
         self.monster_sprite.monster_sprite = arcade.Sprite('images/meteor.png')
         self.dot_sprite = ModelSprite('images/player.png', model=self.world.player)
 
@@ -180,12 +189,7 @@ class HendrixWindow(arcade.Window):
                     self.setup()
                     self.world.start()
 
-
-def main():
-    window = HendrixWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
-    arcade.set_window(window)
-    arcade.run()
-
-
-if __name__ == '__main__':
-    main()
+    def start():
+        window = HendrixWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
+        arcade.set_window(window)
+        arcade.run()

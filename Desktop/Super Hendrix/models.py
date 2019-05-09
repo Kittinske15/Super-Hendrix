@@ -100,10 +100,10 @@ class World:
                     Meteor(self,width//4 ,height + 200)]
 
         self.score = 0
-        self.level = 0
+        self.level = 1
         self.level_meteor_big = 5
-        self.level_meteor = 2
-        self.hp = 2
+        self.level_meteor = 1
+        self.hp = 4
         self.st = False
 
     def increase_score(self):
@@ -116,7 +116,7 @@ class World:
         return self.level
 
     def up_level(self):
-        if self.get_score() % 5 == 0:
+        if self.get_score() % 7 == 0:
             self.level += 1
             for i in self.diamond:
                 i.up_speed()
@@ -139,7 +139,9 @@ class World:
             for i in self.meteorbig:
                 temp_meteorbig = randint(100, 400)
                 i.y = SCREEN_HEIGHT+temp_meteorbig
-            self.meteor.y = SCREEN_HEIGHT+100
+            for i in self.meteor:
+                temp_meteor = randint(100, 350)
+                i.y = SCREEN_HEIGHT+temp_meteor
             self.st = False
 
     def limit_screen(self, width, height):
