@@ -20,83 +20,87 @@ class ModelSprite(arcade.Sprite):
         self.sync_with_model()
         super().draw()
 
-
-class DiamondSprite:
-    def __init__(self, model):
+class ObjectSprite:
+    def __init__(self, image, model):
         self.model = model
-        self.diamond_sprite = arcade.Sprite('images/diamonds.png')
-
+        self.object_sprite = arcade.Sprite(image)
+    
     def draw(self):
-        self.diamond_sprite.set_position(self.model.x, self.model.y)
-        self.diamond_sprite.draw()
-
-
-class MeteorbigSprite:
-    def __init__(self, model):
-        self.model = model
-        self.meteor_big_sprite = arcade.Sprite('images/meteor_big.png')
-
-    def draw(self):
-        self.meteor_big_sprite.set_position(self.model.x, self.model.y)
-        self.meteor_big_sprite.draw()
-
-
-class MeteorSprite:
-    def __init__(self, model):
-        self.model = model
-        self.meteor_sprite = arcade.Sprite('images/meteor.png')
-
-    def draw(self):
-        self.meteor_sprite.set_position(self.model.x, self.model.y)
-        self.meteor_sprite.draw()
-
+        self.object_sprite.set_position(self.model.x, self.model.y)
+        self.object_sprite.draw()
 
 class HendrixWindow(arcade.Window):
     DELAY = 5
+    diamonds_path = 'images/diamonds.png'
+    meteor_path = 'images/meteor.png'
+    meteor_big_path = 'images/meteor_big.png'
+    superman_path = 'images/hendrix.png'
+    first_back = 'images/1.jpeg'
+    heart_path = 'images/heart.png'
 
     def __init__(self, width, height):
+        print("init")
         super().__init__(width, height)
-        self.background = arcade.load_texture("images/1.jpeg")
-
+        self.background = arcade.load_texture(self.first_back)
+        print("pass background")
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.dot_sprite = ModelSprite(
-            'images/hendrix.png', model=self.world.player)
-        self.meteor_sprite = [MeteorSprite(model=self.world.meteor[0]),MeteorSprite(model=self.world.meteor[1])]
-        self.diamond_sprite = self.create_diamonds()
-        self.meteor_big_sprite = self.create_meteor_big()
-        self.hp = [arcade.load_texture("images/heart.png"), arcade.load_texture(
-            "images/heart.png"), arcade.load_texture("images/heart.png"), arcade.load_texture("images/heart.png"), arcade.load_texture("images/heart.png")]
+        print("pass world")
+        self.dot_sprite = ModelSprite(self.superman_path, model=self.world.player)
+        print("pass player")
+        self.meteor_sprite = self.create_object(2,self.meteor_path)
+        print("pass meteor")
+        self.diamond_sprite = self.create_object(5,self.diamonds_path)
+        print("pass diamond")
+        self.meteor_big_sprite = self.create_object(3,self.meteor_big_path)
+        print("pass big meteor")
+        self.hp = self.create_hearts()
+        print("pass heart")
         self.num_hp = 4
+        print("pass num hp")
         self.menus = {'gameover': arcade.load_texture("images/gameover.png"),
                       'play': arcade.load_texture("images/play.png")}
         self.count = 0
         self.temp_player = 1
+        print("exit init")
 
-    def create_diamonds(self):
+    def create_object(self, amount, image_path):
+        print("create object")
         temp = []
-        for i in range(0,4):
-            temp.append(DiamondSprite(model=self.world.diamond[i]))    
+        for i in range(amount):
+            if image_path == self.diamonds_path:
+                print("create diamond")
+                temp.append(ObjectSprite(image_path,model=self.world.diamond[i]))
+            elif image_path == self.meteor_path:
+                print("create meteor")
+                temp.append(ObjectSprite(image_path,model=self.world.meteor[i]))
+            elif image_path == self.meteor_big_path:
+                print("create big meteor")
+                temp.append(ObjectSprite(image_path,model=self.world.meteorbig[i]))
+        print("exit create object")
         return temp
 
-    def create_meteor_big(self):
+    def create_hearts(self):
+        print("enter create heart")
         temp = []
-        for i in range(0,2):
-            temp.append(MeteorSprite(model=self.world.meteor[i]))
+        for i in range(5):
+            print("load heart")
+            arcade.load_texture("images/heart.png")
+        print("exit create heart")
         return temp
-
 
     def setup(self):
-        self.background = arcade.load_texture("images/1.jpeg")
-        self.hp = [arcade.load_texture("images/heart.png"), arcade.load_texture(
-            "images/heart.png"), arcade.load_texture("images/heart.png")]
+        print("enter set up")
+        self.background = arcade.load_texture(self.first_back)
+        self.hp = self.create_hearts()
         self.num_hp = 4
         self.world.level = 1
         self.world.score = 0
         self.world.hp = 4
         self.world.level_meteor_big = 5
         self.world.level_meteor = 1
-        self.monster_sprite.monster_sprite = arcade.Sprite('images/meteor.png')
-        self.dot_sprite = ModelSprite('images/player.png', model=self.world.player)
+        self.meteor_sprite = self.create_object(2,self.meteor_path)
+        self.dot_sprite = ModelSprite(self.superman_path, model=self.world.player)
+        print("exit set up")
 
     def on_key_press(self, key, key_modifiers):
         if not self.world.is_start():
