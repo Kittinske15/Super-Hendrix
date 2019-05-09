@@ -1,6 +1,5 @@
 from random import randint
 
-from funcCheck import is_hit
 import arcade.key
 
 DIR_STILL = 0
@@ -15,6 +14,14 @@ MOVEMENT_SPEED = 7
 
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
+
+def is_hit(player_x, player_y, diamond_x, diamond_y):
+    if diamond_y - 20 <= player_y + 20:
+        if diamond_y + 20 <= player_y - 20:
+            return False
+        if player_x - 20 <= diamond_x +20 and diamond_x - 20 <= player_x + 20:
+            return True
+    return False
 
 
 class Player:
@@ -61,6 +68,9 @@ class Meteor:
 
     def update(self,delta):
         self.y -= Meteor.METEOR_SPEED
+        if self.y < -20:
+            self.y = SCREEN_HEIGHT
+            self.x = randint(50, 350)
 
     def hit(self, player):
         return is_hit(player.x, player.y, self.x, self.y)
@@ -80,12 +90,15 @@ class World:
             Diamond(self, width - 200, height + 100),
             Diamond(self, width - 250, height + 200),
             Diamond(self, width - 300, height + 300),
-            Diamond(self, width - 200, height + 400),
-        ]
+            Diamond(self, width - 200, height + 400)]
+
         self.meteorbig = [MeteorBig(self, width // 4, height + 100),
                     MeteorBig(self, width // 2, height + 300),
                     MeteorBig(self, width // 6, height + 400)]
-        self.meteor = Meteor(self,width//2,height + 100)
+
+        self.meteor = [Meteor(self,width//2 ,height + 50), 
+                    Meteor(self,width//4 ,height + 200)]
+
         self.score = 0
         self.level = 0
         self.level_meteor_big = 5
@@ -189,10 +202,11 @@ class World:
                 i.random_position()
 
         if self.get_level() >= self.level_meteor:
-            self.meteor.update(delta)
-            if self.meteor.hit(self.player):
-                self.meteor.y = SCREEN_HEIGHT
-                self.player_hit()
+            for k in self.meteor:
+                k.update(delta)
+                if k.hit(self.player):
+                    k.y = SCREEN_HEIGHT
+                    self.player_hit()
         
         self.start_new_game()
 

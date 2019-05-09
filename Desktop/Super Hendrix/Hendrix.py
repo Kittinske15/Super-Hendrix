@@ -57,16 +57,14 @@ class HendrixWindow(arcade.Window):
 
     def __init__(self, width, height):
         super().__init__(width, height)
-
         self.background = arcade.load_texture("images/1.jpeg")
 
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.dot_sprite = ModelSprite(
             'images/hendrix.png', model=self.world.player)
-        self.meteor_sprite = MeteorSprite(model=self.world.meteor)
+        self.meteor_sprite = [MeteorSprite(model=self.world.meteor[0]),MeteorSprite(model=self.world.meteor[1])]
         self.diamond_sprite = [DiamondSprite(model=self.world.diamond[0]), DiamondSprite(model=self.world.diamond[1]),
-                               DiamondSprite(model=self.world.diamond[2]), DiamondSprite(
-                                   model=self.world.diamond[3]),
+                               DiamondSprite(model=self.world.diamond[2]), DiamondSprite(model=self.world.diamond[3]),
                                DiamondSprite(model=self.world.diamond[4])]
         self.meteor_big_sprite = [MeteorbigSprite(model=self.world.meteorbig[0]), MeteorbigSprite(model=self.world.meteorbig[1]),
                                   MeteorbigSprite(model=self.world.meteorbig[2])]
@@ -158,7 +156,9 @@ class HendrixWindow(arcade.Window):
         self.draw_detail()
         for j in self.meteor_big_sprite:
             j.draw()
-        self.meteor_sprite.draw()
+        for k in self.meteor_sprite:
+            k.draw()
+
 
         if len(self.hp) == 0:
             self.world.die()
