@@ -160,7 +160,7 @@ class World:
         self.state = World.STATE_DEAD
 
     def is_dead(self):
-        return self.state == World.STATE_DEAD
+        return self.state
     
     def player_hit(self):
         if not self.hp < 0:
