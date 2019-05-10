@@ -2,7 +2,7 @@ import arcade
 
 from models import Player, World, Diamond
 
-SCREEN_WIDTH = 400
+SCREEN_WIDTH = 440
 SCREEN_HEIGHT = 600
 
 
@@ -39,7 +39,6 @@ class HendrixWindow(arcade.Window):
     heart_path = 'images/heart.png'
 
     def __init__(self, width, height):
-        print("init")
         super().__init__(width, height)
         self.setup()
 
@@ -111,12 +110,12 @@ class HendrixWindow(arcade.Window):
                          12, )
 
         arcade.draw_text('Level : '+str(self.world.level),
-                         self.width - 400,
+                         self.width - 435,
                          self.height - 30,
                          color,
                          12, )
         arcade.draw_text('HP : ',
-                         self.width - 400,
+                         self.width - 435,
                          self.height - 60,
                          color,
                          12, )
@@ -127,7 +126,7 @@ class HendrixWindow(arcade.Window):
 
         for i in self.hp:
             arcade.draw_texture_rectangle(
-                self.width - 360+temp, self.height - 53, 10, 12, i)
+                self.width - 395+temp, self.height - 55, 10, 12, i)
             temp += 15
 
     def on_draw(self):
