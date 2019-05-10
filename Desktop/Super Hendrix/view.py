@@ -104,21 +104,21 @@ class HendrixWindow(arcade.Window):
             color = arcade.color.WHITE
 
         arcade.draw_text('Score : '+str(self.world.score),
-                         self.width - 80,
+                         self.width - 110,
                          self.height - 30,
                          color,
-                         12, )
+                         18, )
 
         arcade.draw_text('Level : '+str(self.world.level),
-                         self.width - 435,
+                         self.width - 438,
                          self.height - 30,
                          color,
-                         12, )
+                         18, )
         arcade.draw_text('HP : ',
-                         self.width - 435,
-                         self.height - 60,
+                         self.width - 438,
+                         self.height - 63,
                          color,
-                         12, )
+                         18, )
         temp = 0
         if self.world.hp != self.num_hp:
             self.hp.pop()
@@ -126,7 +126,7 @@ class HendrixWindow(arcade.Window):
 
         for i in self.hp:
             arcade.draw_texture_rectangle(
-                self.width - 395+temp, self.height - 55, 10, 12, i)
+                self.width - 380+temp, self.height - 55, 13, 15, i)
             temp += 15
 
     def on_draw(self):
