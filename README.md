@@ -1,6 +1,6 @@
 # Super Hendrix
 
-![The most exciting game you've ever seen.](/images/Superhendrix_game.jpeg)
+![The most exciting game you've ever seen.](/Super_Hendrix/images/Superhendrix_game.jpg)
 
 ## Prerequisite
 * python version 3.0 or above
